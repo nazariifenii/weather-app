@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-import { OPEN_WEATHER_MAP_API_URL } from "@env";
+import { StyleSheet, View, Platform, StatusBar } from "react-native";
+import AppNavigator from "./src/navigation";
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <View style={styles.container}>
-      <Text>{OPEN_WEATHER_MAP_API_URL}</Text>
+      {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+      <AppNavigator />
     </View>
   );
 }
@@ -13,7 +14,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
