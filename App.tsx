@@ -1,7 +1,7 @@
 import { StyleSheet, View, Platform, StatusBar } from "react-native";
 import { Provider } from "react-redux";
 import AppNavigator from "./src/navigation";
-import store from "./store/store";
+import store from "./src/store/store";
 
 export default function App(): JSX.Element {
   return (

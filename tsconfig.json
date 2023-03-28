@@ -16,7 +16,7 @@
     "strict": true
   },
   "paths": {
-    "*": ["src/types/*.d.ts"]
+    "*": ["types/*.d.ts"]
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": [
