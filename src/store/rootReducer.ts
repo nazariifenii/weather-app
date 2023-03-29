@@ -1,22 +1,7 @@
 import R from "ramda";
 import { Types } from "./actions";
+import INITIAL_STATE from "./initialState";
 
-type WeatherState = {
-  weatherForecastByWeek: Array<WeatherData>;
-};
-
-export type RootState = {
-  isFetching: boolean;
-  weather: WeatherState;
-};
-
-const INITIAL_STATE = {
-  isFetching: true,
-  weather: { weatherForecastByWeek: [] },
-  errors: {},
-};
-
-//FIXME: Any is not a propper type for action
 const rootReducer = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
     case Types.FETCH_WEATHER_FORECAST_SUCCESS:

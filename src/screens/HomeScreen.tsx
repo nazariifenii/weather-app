@@ -6,16 +6,19 @@ import {
   SafeAreaView,
   SectionList,
   StatusBar,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { RootState } from "src/store/rootReducer";
+import { WeatherRow } from "../components";
+import { Colors } from "../constants";
+import { RootState } from "src/store/initialState";
 import { Creators } from "../store/actions";
 
 const HomeScreen: React.FC = () => {
   const dispatch = useDispatch();
 
-  const weatherByWeek: any = useSelector(
+  const weatherByWeek: WeatherDataByWeek[] = useSelector(
     (state: RootState) => state.weather.weatherForecastByWeek
   );
 
@@ -27,11 +30,16 @@ const HomeScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <SectionList
         sections={weatherByWeek}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => JSON.stringify(item) + index}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text style={styles.title}>{item.dayName}</Text>
-          </View>
+          <WeatherRow
+            humidity={item.humidity}
+            nightTemperature={item.nightTemperature}
+            windSpeed={item.windSpeed}
+            iconUrl={item.iconUrl}
+            dayName={item.dayName}
+            dayTemperature={item.dayTemperature}
+          ></WeatherRow>
         )}
         renderSectionHeader={({ section: { title } }) => (
           <Text style={styles.header}>{title}</Text>
@@ -43,21 +51,14 @@ const HomeScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Colors.whiteColor,
     flex: 1,
     paddingTop: StatusBar.currentHeight,
-    marginHorizontal: 16,
-  },
-  item: {
-    backgroundColor: "#f9c2ff",
-    padding: 20,
-    marginVertical: 8,
   },
   header: {
+    paddingHorizontal: 16,
     fontSize: 32,
-    backgroundColor: "#fff",
-  },
-  title: {
-    fontSize: 24,
+    backgroundColor: Colors.whiteColor,
   },
 });
 
