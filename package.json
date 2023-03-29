@@ -16,7 +16,10 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-saga": "^1.2.3",
-    "reduxsauce": "^1.2.1"
+    "reduxsauce": "^1.2.1",
+    "react-native-reanimated": "~2.14.4",
+    "react-native-gesture-handler": "~2.9.0",
+    "@gorhom/bottom-sheet": "4"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",

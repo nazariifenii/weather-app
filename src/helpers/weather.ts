@@ -1,5 +1,5 @@
 import { getDateString, ordinalInWord } from "../utils/date";
-import { OPEN_WEATHER_ICON_URL } from "@env";
+import { DATE_FORMAT, OPEN_WEATHER_ICON_URL } from "@env";
 import moment from "moment";
 
 const getOpenWeatherIconUrl = (icon: string) =>
@@ -20,8 +20,8 @@ const parseWeatherForecast = (
   let weekCount = 1;
 
   data.list.forEach((item: OpenWeatherAPIRespListItem, index: number) => {
-    const date: Date = new Date(item.dt * 1000);
-    const dateString = moment(date).format();
+    const date: Date = new Date(item.dt * 1000); // TODO: Parse with moment!
+    const dateString = moment(date).format(DATE_FORMAT);
     const isLastDay = data.list?.length === index + 1;
     const isSunday = date.getDay() === 0;
 

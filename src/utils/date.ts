@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const ordinalInWord = (cardinal: number) => {
   var ordinals = ["zeroth", "first", "second", "third", "forth"];
   return ordinals[cardinal];
@@ -25,4 +27,7 @@ const getDateString = (date: Date) => {
   return isDateToday(date) ? "Today" : days[date.getDay()];
 };
 
-export { ordinalInWord, isDateToday, getDateString };
+const parseDateMoment = (date: string) =>
+  moment(date, "YYYY-MM-DD").startOf("day").format();
+
+export { ordinalInWord, isDateToday, getDateString, parseDateMoment };

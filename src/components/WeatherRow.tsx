@@ -18,14 +18,15 @@ const WeatherRow: React.FC<DayWeatherData> = (item) => {
       </View>
       <View style={styles.additionalInfoContainer}>
         <View style={styles.additionalInfoLeftContainer}>
-          <Text style={styles.additionalInfoPrimaryText}>Wind: </Text>
+          <Text style={styles.additionalInfoPrimaryText}>{"Wind:"}</Text>
           <Text style={styles.additionalInfoSecondaryText}>
             {item.windSpeed}
           </Text>
         </View>
         <View style={[styles.additionalInfoRightContainer]}>
+          {/* TODO: It's better to pass this data as a prop, not hardcode */}
           <Text style={[styles.additionalInfoPrimaryText, styles.textRight]}>
-            {"Humidity: "}
+            {"Humidity:"}
           </Text>
           <Text style={[styles.additionalInfoSecondaryText, styles.textRight]}>
             {item.humidity}
@@ -76,6 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   item: {
+    height: 100,
     backgroundColor: Colors.reefBlue,
     padding: 20,
     marginHorizontal: 16,
