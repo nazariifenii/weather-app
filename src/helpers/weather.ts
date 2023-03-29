@@ -1,5 +1,6 @@
 import { getDateString, ordinalInWord } from "../utils/date";
 import { OPEN_WEATHER_ICON_URL } from "@env";
+import moment from "moment";
 
 const getOpenWeatherIconUrl = (icon: string) =>
   `${OPEN_WEATHER_ICON_URL + "/" + icon}.png`;
@@ -9,35 +10,43 @@ const getWeekTitle = (weekCount: number) => {
   return `${ordinal[0].toUpperCase() + ordinal.slice(1)} week`;
 };
 
-const weatherByWeek = (data: WeatherApiResp) => {
-  let weekCount = 1;
-  let weatherByWeek: Array<WeatherDataByWeek> = [];
-  let currentWeekData: Array<DayWeatherData> = [];
+const parseWeatherForecast = (
+  data: OpenWeatherAPIResp
+): ParseWeatherForecast => {
+  let weatherByDate: WeatherByDate = {};
+  let weatherDatesByWeek: Array<WeatherDatesByWeek> = [];
 
-  data.list.forEach((item: WeatherApiRespListItem, index: number) => {
-    let date: Date = new Date(item.dt * 1000);
-    const isLastDay = data.list.length - 1 === index;
+  let currentWeekDates: Array<string> = [];
+  let weekCount = 1;
+
+  data.list.forEach((item: OpenWeatherAPIRespListItem, index: number) => {
+    const date: Date = new Date(item.dt * 1000);
+    const dateString = moment(date).format();
+    const isLastDay = data.list?.length === index + 1;
     const isSunday = date.getDay() === 0;
 
-    currentWeekData.push({
+    weatherByDate[dateString] = {
+      date: dateString,
       humidity: item.humidity + " %",
       windSpeed: item.speed + " m / s",
       dayName: getDateString(date),
       iconUrl: getOpenWeatherIconUrl(item.weather[0].icon),
       dayTemperature: item.temp.day.toFixed(0) + "°C",
       nightTemperature: item.temp.night.toFixed(0) + "°C",
-    });
+    };
+
+    currentWeekDates.push(dateString);
 
     if (isSunday || isLastDay) {
-      weatherByWeek.push({
+      weatherDatesByWeek.push({
         title: getWeekTitle(weekCount),
-        data: currentWeekData,
+        data: currentWeekDates,
       });
-      currentWeekData = [];
+      currentWeekDates = [];
       weekCount += 1;
     }
   });
-  return weatherByWeek;
+  return { weatherByDate, weatherDatesByWeek };
 };
 
-export { weatherByWeek };
+export { parseWeatherForecast };

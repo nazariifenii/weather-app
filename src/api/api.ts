@@ -6,9 +6,7 @@ import {
   LVIV_CITY_LONG,
 } from "@env";
 
-export const getWeather = (
-  daysCount: number
-): Promise<Array<WeatherApiResp>> => {
+export const getWeather = (daysCount: number): Promise<OpenWeatherAPIResp> => {
   return axios
     .get(`${OPEN_WEATHER_MAP_API_URL}/data/2.5/forecast/daily`, {
       params: {

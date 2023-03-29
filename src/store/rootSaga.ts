@@ -1,7 +1,7 @@
 import { call, put, takeLatest, all, fork } from "redux-saga/effects";
 import { Types, Creators } from "./actions";
 import { getWeather } from "../api/api";
-import { weatherByWeek } from "../helpers/weather";
+import { parseWeatherForecast } from "../helpers/weather";
 
 type FetchWeatherError = {
   message: string;
@@ -16,8 +16,11 @@ function* fetchWeatherForecast(
   action: FetchWeatherAction
 ): Generator<any, void, any> {
   try {
-    const response: WeatherApiResp = yield call(getWeather, action.daysCount);
-    const data: WeatherDataByWeek = yield weatherByWeek(response);
+    const response: OpenWeatherAPIResp = yield call(
+      getWeather,
+      action.daysCount
+    );
+    const data: ParseWeatherForecast = yield parseWeatherForecast(response);
     yield put(Creators.fetchWeatherForecastSuccess(data));
   } catch (error) {
     const payload: FetchWeatherError = { message: (error as Error).message };

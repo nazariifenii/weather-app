@@ -1,16 +1,13 @@
-type WeatherState = {
-  weatherForecastByWeek: Array<WeatherDataByWeek>;
-};
-
 export type RootState = {
   isFetching: boolean;
-  weather: WeatherState;
+  weather: ParseWeatherForecast;
+  errors: { message: string };
 };
 
-const INITIAL_STATE = {
+const INITIAL_STATE: RootState = {
   isFetching: true,
-  weather: { weatherForecastByWeek: [] },
-  errors: {},
+  weather: { weatherByDate: {}, weatherDatesByWeek: [] },
+  errors: { message: "" },
 };
 
 export default INITIAL_STATE;

@@ -1,4 +1,5 @@
 declare type DayWeatherData = {
+  date: string;
   dayName: string;
   iconUrl: string;
   humidity: string;
@@ -7,12 +8,21 @@ declare type DayWeatherData = {
   nightTemperature: string;
 };
 
-declare type WeatherDataByWeek = {
-  data: Array<DayWeatherData>;
+declare type WeatherDatesByWeek = {
   title: string;
+  data: Array<string>;
 };
 
-declare type WeatherApiRespListItem = {
+declare type WeatherByDate = {
+  [key: string]: DayWeatherData;
+};
+
+declare type ParseWeatherForecast = {
+  weatherByDate: WeatherByDate;
+  weatherDatesByWeek: Array<WeatherDatesByWeek>;
+};
+
+declare type OpenWeatherAPIRespListItem = {
   dt: number;
   sunrise: number;
   sunset: number;
@@ -48,7 +58,7 @@ declare type WeatherApiRespListItem = {
   rain: number;
 };
 
-declare type WeatherApiResp = {
+declare type OpenWeatherAPIResp = {
   city: {
     id: number;
     name: string;
@@ -63,5 +73,5 @@ declare type WeatherApiResp = {
   cod: number;
   message: number;
   cnt: number;
-  list: WeatherApiRespListItem[];
+  list: Array<OpenWeatherAPIRespListItem>;
 };
