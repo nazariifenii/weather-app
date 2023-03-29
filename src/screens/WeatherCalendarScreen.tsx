@@ -4,35 +4,40 @@ import { Calendar, DateData } from "react-native-calendars";
 import { useDispatch, useSelector } from "react-redux";
 import BottomSheet from "@gorhom/bottom-sheet";
 import moment from "moment";
-import { DATE_FORMAT } from "@env";
+import { DATE_FORMAT, FORECAST_DAYS_COUNT } from "@env";
 
 import { Creators } from "../store/actions";
 import { Colors } from "../constants";
 import { RootState } from "src/store/initialState";
 import { WeatherRow } from "../components";
+import { formatDate } from "../utils/date";
 
 const HomeScreen: React.FC = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const snapPoints = useMemo(() => ["25%", "50%"], []);
+
   const [selectedDate, setSelectedDate] = useState("");
+  const [dateNow] = useState(formatDate());
 
   const dispatch = useDispatch();
   const weather = useSelector(
     (state: RootState) => state.weather.weatherByDate
   );
 
+  const rowData = weather[selectedDate];
+
   useEffect(() => {
     dispatch(Creators.fetchWeatherForecast(16));
   }, []);
 
-  const [dateNow] = useState(moment().format(DATE_FORMAT));
-
   const onDayPress = (date: DateData) => {
-    setSelectedDate(moment(date.dateString).format(DATE_FORMAT));
+    setSelectedDate(formatDate(date.dateString));
     bottomSheetRef.current?.expand();
   };
 
-  const rowData = weather[selectedDate];
+  const forecastLastDate = moment(dateNow)
+    .add(FORECAST_DAYS_COUNT - 1, "days")
+    .format(DATE_FORMAT);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +46,8 @@ const HomeScreen: React.FC = () => {
         style={styles.calendar}
         disableAllTouchEventsForInactiveDays
         current={dateNow}
-        maxDate={moment(dateNow).add(15, "days").format(DATE_FORMAT)} // API restrictions to get a weather
+        minDate={dateNow}
+        maxDate={forecastLastDate} // API restrictions to get a weather
         onDayPress={onDayPress}
         markedDates={{
           [selectedDate]: {

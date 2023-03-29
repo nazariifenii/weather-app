@@ -20,10 +20,10 @@ const parseWeatherForecast = (
   let weekCount = 1;
 
   data.list.forEach((item: OpenWeatherAPIRespListItem, index: number) => {
-    const date: Date = new Date(item.dt * 1000); // TODO: Parse with moment!
-    const dateString = moment(date).format(DATE_FORMAT);
+    const date: moment.Moment = moment(item.dt * 1000).startOf("day");
+    const dateString = date.format(DATE_FORMAT);
     const isLastDay = data.list?.length === index + 1;
-    const isSunday = date.getDay() === 0;
+    const isSunday = date.day() === 0;
 
     weatherByDate[dateString] = {
       date: dateString,

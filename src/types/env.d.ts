@@ -5,4 +5,5 @@ declare module "@env" {
   export const LVIV_CITY_LAT: string;
   export const LVIV_CITY_LONG: string;
   export const DATE_FORMAT: string;
+  export const FORECAST_DAYS_COUNT: number;
 }

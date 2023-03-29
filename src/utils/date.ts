@@ -1,20 +1,23 @@
 import moment from "moment";
+import { DATE_FORMAT } from "@env";
 
-const ordinalInWord = (cardinal: number) => {
+type DateType = string | Date | number | moment.Moment;
+
+const formatDate = (date?: DateType): string =>
+  date ? moment(date).format(DATE_FORMAT) : moment().format(DATE_FORMAT);
+
+const ordinalInWord = (cardinal: number): string => {
   var ordinals = ["zeroth", "first", "second", "third", "forth"];
   return ordinals[cardinal];
 };
 
-const isDateToday = (date: Date) => {
-  const today = new Date();
-  return (
-    date.getDate() == today.getDate() &&
-    date.getMonth() == today.getMonth() &&
-    date.getFullYear() == today.getFullYear()
-  );
+const isDateToday = (date: DateType): boolean => {
+  const today = moment().startOf("day");
+  const parsedDate = moment(date).startOf("day");
+  return today.diff(parsedDate) === 0;
 };
 
-const getDateString = (date: Date) => {
+const getDateString = (date: moment.Moment): string => {
   var days = [
     "Sunday",
     "Monday",
@@ -24,10 +27,16 @@ const getDateString = (date: Date) => {
     "Friday",
     "Saturday",
   ];
-  return isDateToday(date) ? "Today" : days[date.getDay()];
+  return isDateToday(date) ? "Today" : days[date.weekday()];
 };
 
-const parseDateMoment = (date: string) =>
+const parseDateMoment = (date: string): string =>
   moment(date, "YYYY-MM-DD").startOf("day").format();
 
-export { ordinalInWord, isDateToday, getDateString, parseDateMoment };
+export {
+  ordinalInWord,
+  isDateToday,
+  getDateString,
+  parseDateMoment,
+  formatDate,
+};
